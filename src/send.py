@@ -74,7 +74,6 @@ class Sender:
         self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
 
 
-
     def send_packed_data(self,point1,point2):
         byte_data = pack_points(point1,point2)
         self.ser.write(byte_data)

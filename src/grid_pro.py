@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+
 class GRID:
     def __init__(self,dict):
         self.centers = dict['grid_centers']
@@ -30,6 +31,11 @@ class GRID:
             return 0
         
     def update_grid(self,frame):
+        self.grid = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+    ]
         for i in range(3):
             for j in range(3):
                 x, y =self.centers[i][j]
@@ -40,8 +46,8 @@ class GRID:
                 # 如果检测到棋子且之前为空
                 if piece != 0 and self.grid[i][j] == 0:
                     self.grid[i][j] = piece
-                    print(f"棋子放入：({i}, {j}), 颜色：{'白棋' if piece == 1 else '黑棋'}, 中心坐标：({x}, {y})")
-        print(self.grid)
+                    # print(f"棋子放入：({i}, {j}), 颜色：{'白棋' if piece == 1 else '黑棋'}, 中心坐标：({x}, {y})")
+        # print(self.grid)
         return self.grid
     def check_grid(self,frame):
         checked_grid = [[

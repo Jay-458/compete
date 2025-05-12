@@ -35,7 +35,7 @@ def split_quadrilateral_into_grid(vertices):
     return grid_centers
 def findground(image):
     # 调整图像大小
-    image = cv2.resize(image, (720, 480))
+    # image = cv2.resize(image, (720, 480))
     
     # 转为灰度图像
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -97,7 +97,9 @@ def findground(image):
                     cv2.circle(image, (x, y), 5, (0, 255, 0), -1)  # 画点
                     cv2.putText(image, f"({i},{j})", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, ())
             # 显示结果
-            #cv2.imshow('Contour with 4 Vertices', image)
+
+            # 显示结果
+            cv2.imshow('Contour with 4 Vertices', image)
             #cv2.waitKey(0)
             #cv2.destroyAllWindows()
             #cv2.waitKey(0)
@@ -127,17 +129,40 @@ if __name__ == "__main__":
     print(a)
 '''
 if __name__ == "__main__":
-    # 可动参数
-    img_path = "D:\\AK48\\Pictures\\Camera Roll\\WIN_20250326_15_18_14_Pro.jpg"
-    img = cv2.imread(img_path)
-    dict = findground(img)
-    #centers = dict['grid_centers']
-    #print(centers[0][0])
-    #x, y = centers[0][0]
-    #print(x, y)
-    #findground(img)
-    GRID_SIZE = dict['GRID_SIZE']
-    print(GRID_SIZE)
+    cap = cv2.VideoCapture(0)
 
-    
+    # 检查摄像头是否成功打开
+    if not cap.isOpened():
+        print("无法打开摄像头")
+        exit()
+
+    while True:
+        ret, frame = cap.read()
+            # 检查是否成功读取帧
+        
+        if not ret:
+            print("无法获取帧，退出...")
+            break
+
+        try:
+                #result1 = find_blackchess.findblack(frame[rows_range, cols_range])
+                #result2 = find_whitechess.findwhite(frame)
+                findground(frame)
+                # print(result2)
+                # print(result1)
+        except Exception as e:
+                    # 捕获异常并打印错误信息
+                    print(f"发生错误: {e}")
+                    # 继续循环
+                    continue
+            
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            
+            break
+            
+        
+    # 释放摄像头并关闭所有窗口
+    cap.release()
+    cv2.destroyAllWindows()
+        
 

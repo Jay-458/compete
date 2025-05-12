@@ -1,16 +1,11 @@
 import find_blackchess
 import grid_pro
-import AIplayer 
 import transfer
 import cv2
-import numpy as np
 import time
 import find_whitechess
-import logging
 import find_ground_pro
 import send
-import copy
-from collections import Counter
 
 
 def place_to_point(place,centers):
@@ -38,8 +33,8 @@ def place_to_point(place,centers):
                 
 
 
-def main(plyer,mode):
-    opponent = -player
+def main():
+    mode = input("请输入模式(A/B)：")
     # 打开摄像头，参数0表示默认摄像头
     cap = cv2.VideoCapture(0)
 
@@ -84,7 +79,34 @@ def main(plyer,mode):
     centers = dict['grid_centers']
     grid = grid_pro.GRID(dict)
     print("初始化棋盘完成")
-    if mode == "B":
+
+    if mode == "A":
+        
+        while True:
+            ret,frame = cap.read()
+            blackchess_list = find_blackchess.findblack(frame)
+            if len(blackchess_list) != 0 :
+                break
+            
+        point1 = transfer.convert_coordinate(blackchess_list[-1])
+        point2 = transfer.convert_coordinate(centers[1][1])
+        sender.send_packed_data(point1,point2)
+        print("已发送")
+    if mode == "A":
+        
+        while True:
+            ret,frame = cap.read()
+            blackchess_list = find_blackchess.findblack(frame)
+            if len(blackchess_list) != 0 :
+                break
+            
+        point1 = transfer.convert_coordinate(blackchess_list[-1])
+        point2 = transfer.convert_coordinate(centers[1][1])
+        sender.send_packed_data(point1,point2)
+        print("已发送")
+ 
+
+    elif mode == "B":
         rows_range = slice(0, 720)
         cols_range = slice(0, 130)
         while True:
@@ -112,79 +134,13 @@ def main(plyer,mode):
             print(point1,point2)
             time.sleep(3)
             sender.send_packed_data(point1,point2)
-            print("已发送")
-                
-
-    elif mode == "C":
-        grid = grid_pro.GRID(dict)
-        #rows_range = slice(0, 720)
-        #cols_range = slice(0, 130)
-        while True:
-            try:
-                    grid.update_grid(frame)
-                    mode_grid = copy.copy(grid.grid)
-                    help = AIplayer.help(mode_grid,player)
-                    print(help)
-                    #point2 = transfer.convert_coordinate(centers[help[0]][help[1]])
-                    #while  True:
-                       # ret,frame = cap.read()
-                       # chess_list = find_chess(frame)
-                        #if len(chess_list) != 0:
-                           # break
-                    #print(chess_list)
-                    
-                    
-                    #point1 = transfer.convert_coordinate(chess_list[-1])
-                    #print(point1,point2)
-                    #sender.send_packed_data(point1,point2)
-                    time.sleep(5)
-
-            except Exception as e:
-                # 捕获异常并打印错误信息
-                print(f"发生错误: {e}")
-                # 继续循环
-                continue
-    elif mode == "A":
-        
-        while True:
-            ret,frame = cap.read()
-            blackchess_list = find_blackchess.findblack(frame)
-            if len(blackchess_list) != 0 :
-                break
-            
-        point1 = transfer.convert_coordinate(blackchess_list[-1])
-        point2 = transfer.convert_coordinate(centers[1][1])
-        
-        #print(point1,point2)
-        #point1 = (0.03,11.75)
-        #point2 = (-8.98,11.45)
-        sender.send_packed_data(point1,point2)
-        print("已发送")
- 
-                            
-            
-            
-
-
-
-            
-       
-        
-            
-        
+            print("已发送")  
     # 释放摄像头并关闭所有窗口
     #cap.release()
     #cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    player = -1
-    mode = 'C'
-    if player == -1:
-            find_chess = find_blackchess.findblack
-    elif player == 1:
-            find_chess = find_whitechess.findwhite
-    else:
-            print("棋子颜色错误")
+    
 
     sender = send.Sender('COM10', 9600)
-    main(player,mode)
+    main()

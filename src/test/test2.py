@@ -4,7 +4,6 @@ import grid_test
 import time
 import AIplayer
 import copy
-import find_blackchess
 import find_whitechess
 
 rows_range = slice(0, 720)
@@ -26,11 +25,12 @@ while True:
         break
 
     try:
-            result1 = find_blackchess.findblack(frame[rows_range, cols_range])
-            result2 = find_whitechess.findwhite(frame)
+            #result1 = find_blackchess.findblack(frame[rows_range, cols_range])
+            #result2 = find_whitechess.findwhite(frame)
             find_ground_pro.findground(frame)
-            print(result2)
-            print(result1)
+            cv2.imshow("frame", frame)
+            # print(result2)
+            # print(result1)
     except Exception as e:
                 # 捕获异常并打印错误信息
                 print(f"发生错误: {e}")
