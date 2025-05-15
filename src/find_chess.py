@@ -72,7 +72,7 @@ def findblack(image):
 def findwhite(image):
     copyimage = image.copy()
     chess_area_min = 1000
-    chess_area_max = 3700
+    chess_area_max = 1800000
     lower_white = np.array([3, 0, 214])
     upper_white = np.array([144, 59, 255])
 

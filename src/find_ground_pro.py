@@ -52,6 +52,7 @@ def findground(image):
     
     # 获取最大轮廓（假设只有一个正方形）
     square_contour = max(contours, key=cv2.contourArea)
+    
     if square_contour is not None:
         
         epsilon = 0.02 * cv2.arcLength(square_contour, True)  # 近似精度
